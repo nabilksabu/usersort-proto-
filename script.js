@@ -1,47 +1,30 @@
-// debounce function
-function debounce(func, delay) {
-    let timeout;
-    return function(...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
-    };
+// JavaScript code for search, sort, filter, and highlight features
+
+// Function to search through an array
+function search(array, query) {
+    return array.filter(item => item.toLowerCase().includes(query.toLowerCase()));
 }
 
-// search function
-function searchItems(items, query) {
-    return items.filter(item => 
-        item.name.toLowerCase().includes(query.toLowerCase())
-    );
+// Function to sort an array
+function sort(array) {
+    return array.sort(); // Default sort (alphabetical)
 }
 
-// sort function
-function sortByAge(items) {
-    return items.sort((a, b) => a.age - b.age);
+// Function to filter items based on a condition
+function filter(array, condition) {
+    return array.filter(item => condition(item));
 }
 
-// filter function
-function filterByRole(items, role) {
-    return items.filter(item => item.role === role);
+// Function to highlight matches in search results
+function highlightMatches(array, query) {
+    const regex = new RegExp(query, 'gi');
+    return array.map(item => item.replace(regex, match => `<span class='highlight'>${match}</span>`));
 }
 
-// highlight function
-function highlightText(text, query) {
-    const regex = new RegExp(`(${query})`, 'gi');
-    return text.replace(regex, '<span class="highlight">$1</span>');
-}
+// Usage Example:
+const items = ['apple', 'banana', 'blueberry', 'cherry', 'date'];
 
-// Example usage
-const items = [...]; // Your items array
-const searchInput = document.getElementById("search");
-
-searchInput.addEventListener("input", debounce(function() {
-    const query = searchInput.value;
-    let results = searchItems(items, query);
-    results = sortByAge(results);
-    const roleFilter = document.querySelector("select#role-filter").value;
-    results = filterByRole(results, roleFilter);
-
-    // Update UI with highlighted text
-    // Assuming displayResults is a function that displays results in the UI
-    displayResults(results.map(item => ({ ...item, name: highlightText(item.name, query) })));
-}, 300));
+const searchResults = search(items, 'b'); // Search for items containing 'b'
+const sortedItems = sort(items); // Sort items alphabetically
+const filteredItems = filter(items, item => item.startsWith('b')); // Filter items that start with 'b'
+const highlightedItems = highlightMatches(items, 'a'); // Highlight matches for 'a'
