@@ -95,3 +95,29 @@ h2 {
     font-weight: bold;
     font-family: 'Arial', sans-serif;
 }
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.controls select {
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 2px solid #444;
+    background-color: rgba(30,30,30,0.9);
+    color: #e0e0e0;
+}
+
+@media (max-width:600px){
+    #user {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #search {
+        width: 80%;
+    }
+}
