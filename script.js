@@ -1,35 +1,47 @@
-const searchInput=document.getElementById("search")
-const container = document.getElementById("user");
-
-
-async function  main() {
-    const list= await displayUsers();
-    console.log(list)//logs the data into console
-    const Container = document.getElementById("user");
-
-    //tests in console to check data
-    list.forEach(element => {
-        console.log('Name',element.Name);
-        console.log('Age',element.Age)
-        console.log('Role',element.Role)
-    });
-
-    //to list out users
-    list.forEach(user => {
-        Container.innerHTML+=`
-        <p>
-        <span><strong>Name:</strong> ${user.Name}</span>
-        <span><strong>Age:</strong> ${user.Age}</span>
-        <span><strong>Role:</strong> ${user.Role}</span>
-        </p>
-        `;
-    });
+// debounce function
+function debounce(func, delay) {
+    let timeout;
+    return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), delay);
+    };
 }
 
-//fetches data.json
-async function displayUsers(){
-    const user=await fetch('data.json');
-    const userData=await user.json();
-    return userData;
+// search function
+function searchItems(items, query) {
+    return items.filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase())
+    );
 }
-main();
+
+// sort function
+function sortByAge(items) {
+    return items.sort((a, b) => a.age - b.age);
+}
+
+// filter function
+function filterByRole(items, role) {
+    return items.filter(item => item.role === role);
+}
+
+// highlight function
+function highlightText(text, query) {
+    const regex = new RegExp(`(${query})`, 'gi');
+    return text.replace(regex, '<span class="highlight">$1</span>');
+}
+
+// Example usage
+const items = [...]; // Your items array
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", debounce(function() {
+    const query = searchInput.value;
+    let results = searchItems(items, query);
+    results = sortByAge(results);
+    const roleFilter = document.querySelector("select#role-filter").value;
+    results = filterByRole(results, roleFilter);
+
+    // Update UI with highlighted text
+    // Assuming displayResults is a function that displays results in the UI
+    displayResults(results.map(item => ({ ...item, name: highlightText(item.name, query) })));
+}, 300));
