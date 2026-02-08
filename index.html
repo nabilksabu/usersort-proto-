@@ -7,9 +7,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <div class="search-bar">
         <input type="text" id="search" placeholder="search....." autofocus>
     </div>
+
+    <div class="controls">
+    <select id="roleFilter">
+        <option value="all">All Roles</option>
+    </select>
+
+    <select id="ageSort">
+        <option value="none">Sort By Age</option>
+        <option value="asc">Age Ascending</option>
+        <option value="desc">Age Descending</option>
+    </select>
+
+</div>
+
     <h2>User List</h2>
     <div id ="user"></div>
     <script src="script.js"></script>
